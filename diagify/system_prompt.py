@@ -197,7 +197,7 @@ Also, to remind you of some correct import paths:\n
 The import path for dynamoDB is 'from diagrams.aws.database import Dynamodb'\n
 remember that this is case sensitive so 'from diagrams.aws.database import DynamoDB' will not work because 'DynamoDB' 
 has incorrect casing.\n
-
+Also, the import path for Redis is 'from diagrams.onprem.inmemory import Redis'\n
 Never use 'from diagrams.custom import Custom' because we do not have any images to actually use.
 Never use ClusterRole as a context manager e.g.\n
 with ClusterRole("TPservice"):

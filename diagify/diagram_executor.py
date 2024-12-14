@@ -3,6 +3,7 @@ import tempfile
 import os
 import glob
 import logging
+import sys
 
 
 def execute_mingrammer_code(code: str) -> str:
@@ -12,13 +13,22 @@ def execute_mingrammer_code(code: str) -> str:
         tmp_script.flush()
 
         try:
-            subprocess.run(["python3", script_path], check=True, cwd=os.getcwd())
+            # Capture stdout and stderr from the executed script
+            result = subprocess.run(
+                [sys.executable, script_path],
+                check=True,
+                cwd=os.getcwd(),
+                text=True,
+                capture_output=True,
+            )
+            logging.info(f"Script executed successfully: {result.stdout}")
             output_path = get_latest_png_file()
             logging.info(f"Diagram successfully generated: {output_path}")
             return output_path
         except subprocess.CalledProcessError as e:
-            logging.error(f"Execution failed: {e}")
-            raise RuntimeError("Failed to execute the generated Mingrammer code.")
+            # Capture and log the detailed error output
+            logging.info("Mingrammer code execution failed!")
+            raise RuntimeError(f"Failed to execute the generated Mingrammer code. Error:\n{e.stderr}")
 
 
 def get_latest_png_file(directory=".") -> str:
